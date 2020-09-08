@@ -855,6 +855,11 @@ on boot
 on boot 
     # Adjust watermark level
     write /proc/sys/vm/watermark_scale_factor 200
+    
+    # sched
+    write /proc/sys/kernel/sched_latency_ns 6000000
+    write /proc/sys/kernel/sched_min_granularity_ns 600000
+    write /proc/sys/kernel/sched_wakeup_granularity_ns 500000
 
     # memory reserve tuning
     write /proc/sys/vm/min_free_kbytes 27386
