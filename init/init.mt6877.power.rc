@@ -56,6 +56,7 @@ on enable-low-power
     write /dev/sys/fs/by-name/userdata/gc_urgent_sleep_time 200
 
     # VM
+    write /proc/sys/vm/dirty_expire_centisecs 3000
     write /proc/sys/vm/dirty_background_ratio 10
 
     # Runtime FS tuning
