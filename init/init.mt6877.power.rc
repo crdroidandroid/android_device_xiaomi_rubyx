@@ -50,6 +50,9 @@ on enable-low-power
     # Configure governor settings for big cluster
     write /sys/devices/system/cpu/cpufreq/policy6/scaling_governor "schedutil"
 
+    # fs
+    write /dev/sys/fs/by-name/userdata/iostat_enable 0
+
     # Runtime FS tuning
     # we should adjust the setting upon boot_complete for runtime performance
     # end boot time fs tune
