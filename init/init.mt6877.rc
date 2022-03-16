@@ -865,9 +865,6 @@ on boot
     write /proc/sys/vm/min_free_kbytes 27386
     write /proc/sys/vm/lowmem_reserve_ratio "0 0 0"
 
-    # Limit discard size to 128MB in order to avoid long IO latency
-    write /sys/block/sda/queue/discard_max_bytes 134217728
-
     # Scheduler
     write /sys/block/sda/queue/scheduler deadline
     write /sys/block/sdb/queue/scheduler deadline
