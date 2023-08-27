@@ -52,6 +52,11 @@ on enable-low-power
 
     # fs
     write /dev/sys/fs/by-name/userdata/iostat_enable 0
+    write /dev/sys/fs/by-name/userdata/cp_interval 6000
+    write /dev/sys/fs/by-name/userdata/gc_urgent_sleep_time 200
+
+    # VM
+    write /proc/sys/vm/dirty_background_ratio 10
 
     # Runtime FS tuning
     # we should adjust the setting upon boot_complete for runtime performance
