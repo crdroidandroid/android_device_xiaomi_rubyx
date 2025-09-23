@@ -3,8 +3,6 @@ import /vendor/etc/init/hw/init.stnfc.rc
 import /vendor/etc/init/hw/init.mi_thermald.rc
 
 on init
-    mkdir /mnt/media_rw/usbotg 0700 media_rw media_rw
-    mkdir /storage/usbotg 0700 root root
     write /sys/module/musb_hdrc/parameters/mu3d_force_on 1
 
     # Set xiaomi touch permissions
