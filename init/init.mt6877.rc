@@ -808,14 +808,6 @@ on boot
     # Power Manager
     write /sys/power/pm_freeze_timeout 2000
 
-on property:vold.decrypt=trigger_reset_main
-    setprop sys.boot_completed 0
-    setprop dev.bootcomplete 0
-
-on property:vold.decrypt=trigger_shutdown_framework
-    setprop sys.boot_completed 0
-    setprop dev.bootcomplete 0
-
 on property:vendor.audio.cit.spkcal.copy=true
     chmod 644 /data/vendor/cit/aw_cali.bin
     copy /data/vendor/cit/aw_cali.bin /mnt/vendor/persist/factory/audio/aw_cali.bin
