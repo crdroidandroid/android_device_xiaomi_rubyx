@@ -1,3 +1,8 @@
+on early-init
+    # Boot perf tuning
+    write /sys/devices/system/cpu/cpufreq/policy0/scaling_governor "performance"
+    write /sys/devices/system/cpu/cpufreq/policy6/scaling_governor "performance"
+
 on property:init.svc.vendor.charger=running
     # Enable UFS powersaving
     write /sys/devices/platform/11270000.ufshci/clkgate_enable 1
@@ -25,10 +30,6 @@ on init
     write /sys/block/sdb/queue/iostats 0
     write /sys/block/sdc/queue/iostats 0
     write /sys/block/sdc/queue/nr_requests 256
-
-    # Boot time tuning
-    write /sys/devices/system/cpu/cpufreq/policy0/scaling_governor "performance"
-    write /sys/devices/system/cpu/cpufreq/policy6/scaling_governor "performance"
 
     # update cpus for cpuset cgroup
     write /dev/cpuset/top-app/cpus 0-7
