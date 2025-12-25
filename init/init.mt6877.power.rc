@@ -39,12 +39,6 @@ on enable-low-power
     # Enable UFS powersaving
     write /sys/devices/platform/11270000.ufshci/clkgate_enable 1
 
-    # Disable watermark boost
-    write /proc/sys/vm/watermark_boost_factor 0
-
-    # Adjust watermark level
-    write /proc/sys/vm/watermark_scale_factor 200
-
     # Runtime FS tuning
     # we should adjust the setting upon boot_complete for runtime performance
     # end boot time fs tune
