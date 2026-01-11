@@ -95,7 +95,7 @@ on enable-low-power
     # Utilization Clamping
     # Tuning
     write /proc/sys/kernel/sched_util_clamp_min_rt_default 0
-    write /proc/sys/kernel/sched_util_clamp_min 128
+    write /proc/sys/kernel/sched_util_clamp_min 0
 
     # rt
     write /dev/cpuctl/rt/cpu.uclamp.latency_sensitive 1
