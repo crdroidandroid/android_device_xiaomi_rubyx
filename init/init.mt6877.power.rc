@@ -80,8 +80,7 @@ on enable-low-power
 
     # sched
     write /proc/sys/kernel/sched_migration_cost_ns 200000
-    write /proc/sys/kernel/sched_latency_ns 4000000
-    write /proc/sys/kernel/sched_min_granularity_ns 400000
+    write /proc/sys/kernel/sched_min_granularity_ns 1000000
     write /proc/sys/kernel/sched_wakeup_granularity_ns 200000
 
     # Enable big task rotation
