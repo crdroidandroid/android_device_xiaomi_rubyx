@@ -12,11 +12,20 @@ vendor.audio.spkcal.copy.inhal=true
 vendor.audiohal.telephonytx.type=2
 vendor.audio.hdr.record.enable=false
 
+# Battery Saving
+persist.cust.tel.eons=1
+persist.vendor.log.tel_log_ctrl=0
+ro.vendor.mtk_log_hide_gps=1
+ro.config.hw_power_saving=true
+persist.vendor.mtk.aee.filter=0
+persist.vendor.mtk.aee.mode=4
+ro.vendor.aee.enforcing=no
+
 # Bluetooth
 bluetooth.hardware.power.operating_voltage_mv=3300
 ro.vendor.bt.platform=6877
-ro.vendor.mtk.bt_sap_enable=true
 vendor.bluetooth.ldac.abr=true
+ro.vendor.mtk.bt_sap_enable=false
 
 # Camera
 camera.disable_zsl_mode=1
@@ -207,10 +216,10 @@ persist.vendor.md_c2k_cap_dep_check=0
 persist.vendor.mims_support=2
 persist.vendor.mtk_sim_switch_policy=2
 persist.vendor.radio.dynamic_sar=1
-persist.vendor.radio.fd.counter=150
-persist.vendor.radio.fd.off.counter=50
-persist.vendor.radio.fd.off.r8.counter=50
-persist.vendor.radio.fd.r8.counter=150
+# persist.vendor.radio.fd.counter=150
+# persist.vendor.radio.fd.off.counter=50
+# persist.vendor.radio.fd.off.r8.counter=50
+# persist.vendor.radio.fd.r8.counter=150
 persist.vendor.radio.flashless.fsm=0
 persist.vendor.radio.flashless.fsm_cst=0
 persist.vendor.radio.flashless.fsm_rw=0
