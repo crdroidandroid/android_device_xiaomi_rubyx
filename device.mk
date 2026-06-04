@@ -266,7 +266,7 @@ PRODUCT_PACKAGES += \
     PowerOffAlarm
 
 # Properties
-include $(DEVICE_PATH)/vendor_logtag.mk
+include hardware/mediatek/configs/properties/vendor_logtag.mk
 
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(DEVICE_PATH)/configs/rsc,$(TARGET_COPY_OUT_VENDOR)/etc/rsc)
