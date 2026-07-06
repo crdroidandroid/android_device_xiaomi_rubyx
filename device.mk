@@ -399,6 +399,8 @@ PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(DEVICE_PATH)/configs/wifi/,$(TARGET_COPY_OUT_VENDOR)/etc/wifi) \
     frameworks/native/data/etc/android.hardware.wifi.direct.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.direct.xml \
 
+$(call soong_config_set_bool,mediatek_wifi_hal,use_pre_u_qpr2_struct,true)
+
 # Inherit the proprietary files
 $(call inherit-product-if-exists, device/xiaomi/miuicamera-rubyx/device.mk)
 $(call inherit-product, vendor/xiaomi/rubyx/rubyx-vendor.mk)
