@@ -67,6 +67,7 @@ BOARD_KERNEL_CMDLINE := \
 
 BOARD_KERNEL_CMDLINE += cgroup_disable=memory
 BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
+BOARD_KERNEL_CMDLINE += kasan=off
 
 BOARD_MKBOOTIMG_ARGS := --base $(BOARD_KERNEL_BASE)
 BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
