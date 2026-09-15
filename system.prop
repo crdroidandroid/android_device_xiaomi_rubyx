@@ -2,7 +2,7 @@
 ro.product.mod_device=ruby_global
 
 # Display
-sys.brightness.disable_gamma_conversion=true
+persist.sys.brightness.low.gamma=true
 
 # Dalvik
 dalvik.vm.dex2oat64.enabled=true
