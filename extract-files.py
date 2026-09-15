@@ -37,6 +37,9 @@ blob_fixups: blob_fixups_user_type = {
     ('vendor/bin/hw/android.hardware.gnss-service.mediatek',
     'vendor/lib64/hw/android.hardware.gnss-impl-mediatek.so'): blob_fixup()
         .replace_needed('android.hardware.gnss-V1-ndk_platform.so', "android.hardware.gnss-V1-ndk.so"),
+    'vendor/bin/hw/android.hardware.media.c2@1.2-mediatek-64b': blob_fixup()
+        .add_needed('libstagefright_foundation-v33.so')
+        .replace_needed('libavservices_minijail_vendor.so', 'libavservices_minijail.so'),
     'vendor/etc/init/android.hardware.neuralnetworks@1.3-service-mtk-neuron.rc': blob_fixup()
         .regex_replace('start', 'enable'),
     ('vendor/firmware/txpowerctrl_gl.cfg',
@@ -44,6 +47,8 @@ blob_fixups: blob_fixups_user_type = {
      'vendor/firmware/txpowerctrl_in.cfg',
      'vendor/firmware/txpowerctrl_in_u.cfg'): blob_fixup()
         .regex_replace(r'\t', ''),
+    'vendor/etc/vintf/manifest/manifest_media_c2_V1_2_default.xml': blob_fixup()
+        .regex_replace('1.1', '1.2'),
     ('vendor/bin/mnld',
      'vendor/lib/libaalservice.so',
      'vendor/lib64/libaalservice.so'): blob_fixup()
