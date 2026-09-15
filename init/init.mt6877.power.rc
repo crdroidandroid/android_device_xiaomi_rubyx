@@ -17,6 +17,8 @@ on init
     # Boot time FS tuning
     write /sys/block/mmcblk0/queue/iostats 0
     write /sys/block/mmcblk0/queue/nr_requests 256
+    write /sys/block/sda/queue/iostats 0
+    write /sys/block/sdb/queue/iostats 0
     write /sys/block/sdc/queue/iostats 0
     write /sys/block/sdc/queue/nr_requests 256
 
@@ -25,7 +27,7 @@ on init
 
     # Configure governor settings for big cluster
     write /sys/devices/system/cpu/cpufreq/policy6/scaling_governor "schedutil"
-    
+
     # update cpus for cpuset cgroup
     write /dev/cpuset/foreground/cpus 0-2,4-7
     write /dev/cpuset/foreground/boost/cpus 0-7
@@ -39,10 +41,9 @@ on enable-low-power
 
     # Runtime FS tuning
     # we should adjust the setting upon boot_complete for runtime performance
-    write /sys/block/mmcblk0/queue/iostats 1
+    # end boot time fs tune
     write /sys/block/mmcblk0/queue/read_ahead_kb 512
     write /sys/block/mmcblk0/queue/nr_requests 128
-    write /sys/block/sdc/queue/iostats 1
     write /sys/block/sdc/queue/read_ahead_kb 512
     write /sys/block/sdc/queue/nr_requests 128
     write /sys/block/dm-0/queue/read_ahead_kb 128
