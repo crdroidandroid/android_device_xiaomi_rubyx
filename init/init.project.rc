@@ -3,6 +3,8 @@ import /vendor/etc/init/hw/init.stnfc.rc
 import /vendor/etc/init/hw/init.mi_thermald.rc
 
 on init
+    setprop ro.boot.hardware.revision ${ro.boot.rsc}
+
     write /sys/module/musb_hdrc/parameters/mu3d_force_on 1
 
     # Set xiaomi touch permissions
@@ -50,10 +52,6 @@ on post-fs-data
 
     chmod 0660 /dev/spm
     chown system system /dev/spm
-
-    # cit led
-    chown system system /sys/class/leds/torch-light0/brightness
-    chown system system /sys/class/leds/flash-light0/brightness
 
 # displayfeature
 on boot

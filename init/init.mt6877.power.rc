@@ -29,11 +29,13 @@ on init
     write /sys/block/sda/queue/iostats 0
     write /sys/block/sdb/queue/iostats 0
     write /sys/block/sdc/queue/iostats 0
+    write /sys/block/sda/queue/nr_requests 256
+    write /sys/block/sdb/queue/nr_requests 256
     write /sys/block/sdc/queue/nr_requests 256
 
     # update cpus for cpuset cgroup
     write /dev/cpuset/top-app/cpus 0-7
-    write /dev/cpuset/foreground/cpus 0-2,4-7
+    write /dev/cpuset/foreground/cpus 0-7
     write /dev/cpuset/background/cpus 0-2
     write /dev/cpuset/system-background/cpus 0-3
     write /dev/cpuset/restricted/cpus 0-3
@@ -49,7 +51,7 @@ on init
     # fs
     write /dev/sys/fs/by-name/userdata/iostat_enable 0
     write /dev/sys/fs/by-name/userdata/cp_interval 6000
-    write /dev/sys/fs/by-name/userdata/gc_urgent_sleep_time 200
+    write /dev/sys/fs/by-name/userdata/gc_urgent_sleep_time 500
 
     # VM
     write /proc/sys/vm/dirty_expire_centisecs 3000
@@ -67,6 +69,8 @@ on enable-low-power
     # we should adjust the setting upon boot_complete for runtime performance
     write /sys/block/mmcblk0/queue/read_ahead_kb 512
     write /sys/block/mmcblk0/queue/nr_requests 64
+    write /sys/block/sda/queue/read_ahead_kb 512
+    write /sys/block/sdb/queue/read_ahead_kb 512
     write /sys/block/sdc/queue/read_ahead_kb 512
     write /sys/block/sda/queue/nr_requests 64
     write /sys/block/sdb/queue/nr_requests 64
@@ -80,16 +84,24 @@ on enable-low-power
 
     # sched
     write /proc/sys/kernel/sched_migration_cost_ns 200000
-    write /proc/sys/kernel/sched_min_granularity_ns 1000000
-    write /proc/sys/kernel/sched_wakeup_granularity_ns 200000
+    write /proc/sys/kernel/sched_min_granularity_ns 1500000
+    write /proc/sys/kernel/sched_wakeup_granularity_ns 300000
+    write /proc/sys/kernel/sched_util_clamp_min 0
+    write /proc/sys/kernel/sched_util_clamp_max 1024
 
-    # Enable big task rotation
-    write /proc/perfmgr/boost_ctrl/eas_ctrl/sched_big_task_rotation 1
+    # Reclaim tuning
+    write /proc/sys/vm/watermark_scale_factor 10
+    write /proc/sys/vm/vfs_cache_pressure 100
 
-    # Configure DVFS
+    # GED tuning
     write /sys/kernel/ged/hal/dvfs_margin_value 130
-    write /sys/kernel/ged/hal/timer_base_dvfs_margin 798
-    write /sys/kernel/ged/hal/loading_base_dvfs_step 4
+    write /sys/kernel/ged/hal/timer_base_dvfs_margin 60
+    write /sys/kernel/ged/hal/custom_upbound_gpu_freq 1
+    write /sys/kernel/ged/hal/custom_boost_gpu_freq 0
+    write /sys/module/ged/parameters/gpu_cust_boost_freq 0
+    write /sys/module/ged/parameters/boost_amp 0
+    write /sys/module/ged/parameters/deboost_reduce 0
+    write /sys/module/ged/parameters/ged_smart_boost 1
 
     # Utilization Clamping
     # Tuning
@@ -120,7 +132,7 @@ on enable-low-power
 
     # foreground
     write /dev/cpuctl/foreground/cpu.uclamp.latency_sensitive 1
-    write /dev/cpuctl/foreground/cpu.uclamp.max 80
+    write /dev/cpuctl/foreground/cpu.uclamp.max max
     write /dev/cpuctl/foreground/cpu.uclamp.min 0
     write /dev/cpuctl/foreground/cpu.shares 20480
 
@@ -143,10 +155,14 @@ on enable-low-power
     write /dev/cpuctl/camera-daemon/cpu.shares 20480
 
     # Dex2Oat
-    write /dev/cpuctl/dex2oat/cpu.uclamp.latency_sensitive 0
-    write /dev/cpuctl/dex2oat/cpu.uclamp.max 60
+    write /dev/cpuctl/dex2oat/cpu.uclamp.latency_sensitive 1
+    write /dev/cpuctl/dex2oat/cpu.uclamp.max max
     write /dev/cpuctl/dex2oat/cpu.uclamp.min 0
-    write /dev/cpuctl/dex2oat/cpu.shares 512
+    write /dev/cpuctl/dex2oat/cpu.shares 1024
+
+    # Force SurfaceFlinger uclamp floor
+    write /dev/cpuctl/system/cpu.uclamp.min 384
+    write /dev/cpuctl/system/cpu.uclamp.max max
 
     # Enable PowerHAL hint processing
     setprop vendor.powerhal.init 1

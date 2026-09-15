@@ -19,10 +19,18 @@ on init
     # uclamp perms
     chmod 0664 /dev/cpuctl/top-app/cpu.uclamp.min
     chown system system /dev/cpuctl/top-app/cpu.uclamp.min
+    chmod 0664 /dev/cpuctl/foreground/cpu.uclamp.min
+    chown system system /dev/cpuctl/foreground/cpu.uclamp.min
+    chmod 0664 /dev/cpuctl/camera-daemon/cpu.uclamp.min
+    chown system system /dev/cpuctl/camera-daemon/cpu.uclamp.min
 
-    # increase sysctl_rmem_max and sysctl_wmem_max values to 2M
-    write /proc/sys/net/core/wmem_max 8388608
-    write /proc/sys/net/core/rmem_max 8388608
+    # Assign reasonable ceiling values for socket rcv/snd buffers
+    write /proc/sys/net/core/rmem_max 16777216
+    write /proc/sys/net/core/wmem_max 16777216
+
+    # Assign TCP write/read memory size.
+    write /proc/sys/net/ipv4/tcp_rmem "2097152 4194304 16777216"
+    write /proc/sys/net/ipv4/tcp_wmem "262144 524288 16777216"
 
 # mount different fs start
 
@@ -36,8 +44,8 @@ on charger
     chown system system /mnt/vendor/nvcfg
     chmod 0771 /mnt/vendor/nvcfg
     restorecon_recursive /mnt/vendor/nvcfg
-    write /sys/devices/platform/battery_meter/FG_daemon_log_level 7
-    write /sys/bus/platform/devices/battery/FG_daemon_log_level 7
+    write /sys/devices/platform/battery_meter/FG_daemon_log_level 1
+    write /sys/bus/platform/devices/battery/FG_daemon_log_level 1
     # Permissions for System Server and daemons.
     chown system system /sys/power/autosleep
     chown system system /sys/power/state
@@ -844,7 +852,10 @@ on property:vendor.mtk.md1.status=reset
     setprop persist.vendor.atm.mdmode normal
 
 on property:sys.boot_completed=1
-    write /sys/block/zram0/comp_algorithm lz4
+    # Disable statsd service to prevent additional battery drain
+    stop statsd
+
+    write /sys/block/zram0/comp_algorithm lzo-rle
     write /proc/sys/vm/page-cluster 0
     write /sys/kernel/mm/swap/vma_ra_enabled false
     swapon_all /vendor/etc/fstab.mt6877
@@ -852,11 +863,9 @@ on property:sys.boot_completed=1
     restart android-hardware-media-c2-hal-1-2
     chmod 440 /proc/net/unix
 
-# FPSGO FBT Game
-on boot
-    insmod /vendor/lib/modules/fpsgo.ko
-
 on boot 
+    start statsd
+
     # Allow PowerHAL to control CPU frequency limits
     chown system system /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq
     chown system system /sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq
@@ -867,20 +876,43 @@ on boot
     chmod 0664 /sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq
     chmod 0664 /sys/devices/system/cpu/cpufreq/policy6/scaling_max_freq
     chmod 0664 /sys/devices/system/cpu/cpufreq/policy6/scaling_min_freq
-  
+
+    # Allow Power HAL to control mali nodes
+    chown system system /sys/devices/platform/13000000.mali/dvfs_period
+    chmod 0664 /sys/devices/platform/13000000.mali/dvfs_period
+    chown system system /sys/devices/platform/13000000.mali/js_scheduling_period
+    chmod 0664 /sys/devices/platform/13000000.mali/js_scheduling_period
+    chown system system /sys/devices/platform/13000000.mali/js_ctx_scheduling_mode
+    chmod 0664 /sys/devices/platform/13000000.mali/js_ctx_scheduling_mode
+
+    # CCI mode
+    chown system system /proc/cpufreq/cpufreq_cci_mode
+    chmod 0664 /proc/cpufreq/cpufreq_cci_mode
+
     # Adjust watermark level
-    write /proc/sys/vm/watermark_scale_factor 200
+    write /proc/sys/vm/watermark_scale_factor 10
     
     # sched
-    write /proc/sys/kernel/sched_latency_ns 6000000
-    write /proc/sys/kernel/sched_min_granularity_ns 600000
-    write /proc/sys/kernel/sched_wakeup_granularity_ns 500000
+    write /proc/sys/kernel/sched_latency_ns 8000000
+    write /proc/sys/kernel/sched_min_granularity_ns 1500000
+    write /proc/sys/kernel/sched_wakeup_granularity_ns 300000
+    write /proc/sys/kernel/sched_util_clamp_min 0
 
     # memory reserve tuning
-    write /proc/sys/vm/min_free_kbytes 27386
-    write /proc/sys/vm/lowmem_reserve_ratio "0 0 0"
+    write /proc/sys/vm/vfs_cache_pressure 100
+    write /proc/sys/vm/min_free_kbytes 16384
+    write /proc/sys/vm/lowmem_reserve_ratio "256 256 32"
 
     # Scheduler
+    write /sys/block/sda/queue/scheduler mq-deadline
     write /sys/block/sda/queue/scheduler deadline
+    write /sys/block/sdb/queue/scheduler mq-deadline
     write /sys/block/sdb/queue/scheduler deadline
+    write /sys/block/sdc/queue/scheduler mq-deadline
     write /sys/block/sdc/queue/scheduler deadline
+    write /sys/block/sdd/queue/scheduler mq-deadline
+    write /sys/block/sdd/queue/scheduler deadline
+    write /sys/block/sde/queue/scheduler mq-deadline
+    write /sys/block/sde/queue/scheduler deadline
+    write /sys/block/sdf/queue/scheduler mq-deadline
+    write /sys/block/sdf/queue/scheduler deadline
