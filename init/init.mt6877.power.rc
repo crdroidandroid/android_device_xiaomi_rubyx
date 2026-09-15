@@ -22,11 +22,12 @@ on init
     write /sys/block/sdc/queue/iostats 0
     write /sys/block/sdc/queue/nr_requests 256
 
+    # Boot time tuning
     # Configure governor settings for little cluster
-    write /sys/devices/system/cpu/cpufreq/policy0/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpufreq/policy0/scaling_governor "performance"
 
     # Configure governor settings for big cluster
-    write /sys/devices/system/cpu/cpufreq/policy6/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpufreq/policy6/scaling_governor "performance"
 
     # update cpus for cpuset cgroup
     write /dev/cpuset/foreground/cpus 0-2,4-7
@@ -41,6 +42,13 @@ on init
 on enable-low-power
     # Enable UFS powersaving
     write /sys/devices/platform/11270000.ufshci/clkgate_enable 1
+
+    # End boot time tuning
+    # Configure governor settings for little cluster
+    write /sys/devices/system/cpu/cpufreq/policy0/scaling_governor "schedutil"
+
+    # Configure governor settings for big cluster
+    write /sys/devices/system/cpu/cpufreq/policy6/scaling_governor "schedutil"
 
     # Runtime FS tuning
     # we should adjust the setting upon boot_complete for runtime performance
