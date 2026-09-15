@@ -867,3 +867,8 @@ on boot
 
     # Limit discard size to 128MB in order to avoid long IO latency
     write /sys/block/sda/queue/discard_max_bytes 134217728
+
+    # Scheduler
+    write /sys/block/sda/queue/scheduler deadline
+    write /sys/block/sdb/queue/scheduler deadline
+    write /sys/block/sdc/queue/scheduler deadline
