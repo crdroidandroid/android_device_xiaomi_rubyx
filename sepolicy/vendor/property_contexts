@@ -25,8 +25,5 @@ persist.vendor.sys.pay.                 u:object_r:vendor_mlipay_prop:s0
 persist.vendor.sys.provision.status     u:object_r:vendor_mlipay_prop:s0
 persist.vendor.sys.attestation.status   u:object_r:vendor_mlipay_prop:s0
 
-# Sensors
-vendor.dynamic_sensor. u:object_r:vendor_dynamic_sensor_prop:s0
-
 # Thermal
 vendor.sys.thermal. u:object_r:vendor_thermal_engine_prop:s0

@@ -7,15 +7,6 @@ genfscon sysfs /devices/platform/11019000.spi5/spi_master/spi5/spi5.0/authen_fd 
 genfscon sysfs /devices/platform/11019000.spi5/spi_master/spi5/spi5.0/authen_fd/performance u:object_r:vendor_sysfs_fingerprint:s0
 genfscon sysfs /devices/platform/fingerprint u:object_r:vendor_sysfs_fingerprint:s0
 
-# Extcon
-genfscon sysfs /devices/platform/extcon_usb/extcon/extcon0/cable.0/name u:object_r:sysfs_extcon:s0
-genfscon sysfs /devices/platform/extcon_usb/extcon/extcon0/cable.1/name u:object_r:sysfs_extcon:s0
-
-# GPU
-genfscon sysfs /devices/platform/13000000.mali/js_ctx_scheduling_mode u:object_r:vendor_sysfs_gpu:s0
-genfscon sysfs /devices/platform/13000000.mali/js_scheduling_period u:object_r:vendor_sysfs_gpu:s0
-genfscon sysfs /devices/platform/13000000.mali/dvfs_period u:object_r:vendor_sysfs_gpu:s0
-
 # Health
 genfscon sysfs /devices/platform/mt_charger/power_supply/ac                                        u:object_r:sysfs_batteryinfo:s0
 genfscon sysfs /devices/platform/battery/power_supply/battery                                      u:object_r:sysfs_batteryinfo:s0
