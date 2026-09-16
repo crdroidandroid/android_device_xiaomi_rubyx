@@ -85,7 +85,8 @@ pm.dexopt.first-boot=verify
 # Display
 debug.mediatek.appgamepq_compress=1
 debug.sf.enable_gl_backpressure=0
-debug.sf.auto_latch_unsignaled=false
+debug.sf.auto_latch_unsignaled=0
+debug.sf.latch_unsignaled=0
 debug.sf.enable_hwc_vds=0
 debug.sf.enable_transaction_tracing=false
 debug.sf.predict_hwc_composition_strategy=0
