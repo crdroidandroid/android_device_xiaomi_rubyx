@@ -671,4 +671,12 @@
     <string-array name="config_cameraHFRPrivAppList" translatable="false">
         <item>com.android.camera</item>
     </string-array>
+
+    <!-- List of system components to disable by default.
+         Disabling these specific GMS receivers reduces background RAM/battery usage
+         (Chimera) and prevents unnecessary crash telemetry uploads (DropBox). -->
+    <string-array name="config_deviceDisabledComponents" translatable="false">
+        <item>com.google.android.gms/.chimera.GmsIntentOperationService$PersistentTrustedReceiver</item>
+        <item>com.google.android.gms/.stats.service.DropBoxEntryAddedReceiver</item>
+    </string-array>
 </resources>
